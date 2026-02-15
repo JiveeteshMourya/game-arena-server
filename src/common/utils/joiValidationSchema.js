@@ -59,7 +59,7 @@ const objectId = Joi.string().hex().length(24).required().messages({
 });
 
 export const joiUserSignUpSchema = Joi.object({
-  fullName: textField("Full Name"),
+  username: textField("Username"),
   email,
   gender: Joi.string().valid("M", "F", "O").required().messages({
     "any.only": "The gender field must be one of [M, F, O].",

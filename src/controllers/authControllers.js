@@ -9,7 +9,7 @@ export const userSignup = async (req, res) => {
   logger.http(
     `userSignup - POST ${req.originalUrl} payload=${JSON.stringify(req.body)}`,
   );
-  const { fullName, email, password, gender } = req.body;
+  const { username, email, password, gender } = req.body;
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -20,7 +20,7 @@ export const userSignup = async (req, res) => {
   const hashedPassword = await hashPassword(password);
 
   const user = await User.create({
-    fullName,
+    username,
     email,
     gender,
     password: hashedPassword,
