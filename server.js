@@ -6,11 +6,14 @@ import connectDB from "./src/common/db/dbConnection.js";
 import { errorHandler } from "./src/middlewares/errorMiddlewares.js";
 import cors from "cors";
 
+import authRouter from "./src/routes/authRoutes.js";
+
 dotenv.config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 9000;
 const isProd = process.env.NODE_ENV === "production";
 
+app.use("/api/v1/auth", authRouter);
 app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ message: "Server is up and running" });
 });
