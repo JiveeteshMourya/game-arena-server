@@ -1,6 +1,8 @@
-import { hashPassword } from "../common/utils/authHelper.js";
+import ServerError from "../common/errors/ServerError.js";
+import { comparePassword, hashPassword } from "../common/utils/authHelper.js";
 import { generateAccessAndRefreshTokens } from "../common/utils/jwtHelper.js";
 import logger from "../common/utils/logger.js";
+import ServerResponse from "../common/utils/ServerResponse.js";
 import { cookieOptions } from "../constant.js";
 import User from "../models/userModel.js";
 import { userControllersText } from "../responseTexts.js";

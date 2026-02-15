@@ -5,6 +5,7 @@ import logger from "./src/common/utils/logger.js";
 import connectDB from "./src/common/db/dbConnection.js";
 import { errorHandler } from "./src/middlewares/errorMiddlewares.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import authRouter from "./src/routes/authRoutes.js";
 
@@ -12,6 +13,30 @@ dotenv.config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 9000;
 const isProd = process.env.NODE_ENV === "production";
+
+if (!isProd) {
+  app.use(
+    morgan(":method :url :status :res[content-length] - :response-time ms", {
+      stream: { write: (msg) => logger.http(msg.trim()) },
+    }),
+  );
+}
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      process.env.CORS_ORIGIN,
+      process.env.CORS_ORIGIN_RENDER,
+    ],
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
 app.get("/api/v1/health", (req, res) => {
