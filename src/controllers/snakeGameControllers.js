@@ -42,7 +42,7 @@ export const newGameScore = async (req, res) => {
   );
 };
 
-export const topThreeScorers = async (req, res) => {
+export const topTenScorers = async (req, res) => {
   const topScorers = await SnakeGame.aggregate([
     { $match: { playerId: { $ne: null } } },
     {
@@ -61,7 +61,7 @@ export const topThreeScorers = async (req, res) => {
     { $match: { scoreNum: { $ne: null } } },
     { $group: { _id: "$playerId", topScore: { $max: "$scoreNum" } } },
     { $sort: { topScore: -1, _id: 1 } },
-    { $limit: 3 },
+    { $limit: 10 },
     {
       $lookup: {
         from: "users",
@@ -79,7 +79,7 @@ export const topThreeScorers = async (req, res) => {
     new ServerResponse(
       200,
       {
-        topThreeScorers: topScorers.map(({ username, score }) => ({
+        topTenScorers: topScorers.map(({ username, score }) => ({
           username,
           score,
         })),
