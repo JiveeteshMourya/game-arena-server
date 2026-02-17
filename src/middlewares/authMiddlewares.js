@@ -29,19 +29,6 @@ export const verifyAccessJWT = wrapAsync(async (req, _, next) => {
     throw new ServerError(401, "Invalid Access Token");
   }
 
-  if (!user.isUserVerified) {
-    logger.error(`verifyAccessJWT - not a verified user - ${user._id}`);
-    throw new ServerError(
-      401,
-      "Not a verified user, Verify first before accessing resources",
-    );
-  }
-
-  if (user.isBlocked) {
-    logger.error(`verifyAccessJWT - User id blocked, access denied`);
-    throw new ServerError(401, "User Id blocked, access denied");
-  }
-
   logger.info(`verifyAccessJWT - user ${user._id} authenticated for resources`);
   req.user = user;
   next();

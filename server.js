@@ -8,6 +8,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import authRouter from "./src/routes/authRoutes.js";
+import snakeGameRouter from "./src/routes/snakeGameRoutes.js";
+import simonSaysGameRouter from "./src/routes/simonSaysGameRoutes.js";
 
 dotenv.config({ path: "./.env" });
 const app = express();
@@ -24,11 +26,7 @@ if (!isProd) {
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      process.env.CORS_ORIGIN,
-      process.env.CORS_ORIGIN_RENDER,
-    ],
+    origin: ["http://localhost:5173", process.env.CORS_ORIGIN],
     credentials: true,
   }),
 );
@@ -39,6 +37,8 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/snake-game", snakeGameRouter);
+app.use("/api/v1/simon-says-game", simonSaysGameRouter);
 app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ message: "Server is up and running" });
 });
